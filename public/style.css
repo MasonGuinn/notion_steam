@@ -1,0 +1,162 @@
+/* Reset default margin and padding */
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+/* Center content vertically */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+  /* Light gray background */
+  font-family: 'Roboto', sans-serif;
+  /* Specify Roboto font */
+}
+
+.container {
+  background-color: #fff;
+  padding: 0px;
+  padding-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  /* Subtle shadow effect */
+  width: 600px;
+  /* Adjust width as needed */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 20px;
+  padding: 20px 0;
+  background-color: #4CAF50;
+  color: white;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  /* Space below heading */
+}
+
+form {
+  min-width: 35vh;
+  max-width: 35vh;
+}
+
+.form-group {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: flex;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+textarea {
+  width: 100%;
+  /* Adjust width and consider border/padding */
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  box-shadow: 2px 2px 5px #00000033;
+  /* Ensure padding and border are included in width calculation */
+  margin-bottom: 10px;
+  /* Space between input fields */
+}
+
+textarea {
+  resize: none;
+  /* Prevent textarea from being resizable */
+}
+
+input[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #4CAF50;
+  /* Green submit button */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+input[name="category"] {
+  box-shadow: none;
+}
+
+input[type="submit"]:hover {
+  background-color: #45a049;
+  /* Darker green hover */
+}
+
+
+.tags-input {
+  display: inline-block;
+  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px 0 5px 0;
+  box-shadow: 2px 2px 5px #00000033;
+  width: 100%;
+  /* Adjust width as needed */
+}
+
+.tags-input ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tags-input li {
+  display: inline-block;
+  background-color: #f2f2f2;
+  color: #333;
+  border-radius: 20px;
+  padding: 5px 10px;
+  margin: 5px;
+}
+
+.tags-input input[type="text"] {
+  border: none;
+  outline: none;
+  padding: 5px;
+  font-size: 14px;
+  width: calc(100% - 30px);
+  word-wrap: break-word;
+  margin-bottom: 0;
+  /* Adjust width considering button width */
+}
+
+.tags-input input[type="text"]:focus {
+  outline: none;
+}
+
+.tags-input .delete-button {
+  background-color: transparent;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  margin-left: 5px;
+  transition: color 0.3s;
+}
+
+.tags-input .delete-button:hover {
+  color: #000000;
+}
