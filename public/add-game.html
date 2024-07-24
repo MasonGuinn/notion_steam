@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Steam Game to Notion</title>
+</head>
+
+<body>
+  <h1>Add Steam Game to Notion</h1>
+  <form action="/add-game" method="POST">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required><br><br>
+
+    <label for="tags">Tags:</label>
+    <input type="text" id="tags" name="tags" required><br><br>
+
+    <label for="description">Description:</label><br>
+    <textarea id="description" name="description" rows="4" cols="50" required></textarea><br><br>
+
+    <label for="date">Date:</label>
+    <input type="date" id="date" name="date" required><br><br>
+
+    <label for="text">Text:</label>
+    <input type="text" id="text" name="text" required><br><br>
+
+    <label for="id">ID:</label>
+    <input type="text" id="id" name="id" required><br><br>
+
+    <label for="url">URL:</label>
+    <input type="url" id="url" name="url" required><br><br>
+
+    <label for="number">Number:</label>
+    <input type="number" id="number" name="number" required><br><br>
+
+    <input type="submit" value="Add Game">
+  </form>
+</body>
+
+</html>
