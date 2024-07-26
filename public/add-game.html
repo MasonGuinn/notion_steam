@@ -12,6 +12,15 @@
 <body>
   <div class="container">
     <h1>Add Steam Game to Notion</h1>
+
+    <div class="form-group">
+      <label for="game-search">Search Steam Game:</label>
+      <input type="text" id="game-search" name="game-search">
+      <button type="button" onclick="fetchGameInfo()">Fetch Game Info</button>
+    </div>
+
+    <div id="game-options"></div>
+
     <form id="addGameForm" action="/add-game" method="POST">
       <div class="form-group">
         <label for="name">Name:</label>

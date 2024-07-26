@@ -10,13 +10,6 @@ import path from "path"
 
 dotenv.config()
 
-// Import SteamAPI
-//let steamAPI;
-//import('steamapi').then(module => {
-//steamAPI = module.default;
-//}).catch(err => {
-//console.error('Failed to import steamapi:', err);
-//});
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -27,26 +20,44 @@ app.use(express.urlencoded({ extended: true }));
 
 const notion = new Client({ auth: process.env.NOTION_KEY })
 
-// TODO:
-async function getSteamGames() {
+
+app.get("/game-info", async function (req, res) {
+  const gameName = req.query.name.toLowerCase();
+  console.log('Searching for game:', gameName);
   try {
     const steam = new steamAPI(process.env.STEAM_API_KEY);
     const games = await steam.getAppList();
-    return games;
-  } catch (error) {
-    console.error('Error fetching Steam games:', error);
-    throw error; // Throw error to handle it in calling function
-  }
-}
+    console.log('Total games in Steam API:', games.length);
 
-// TODO: Endpoint to fetch and display Steam games
-app.get("/steam-games", async function (req, res) {
-  try {
-    const games = await getSteamGames();
-    res.render("steam-games", { games }); // Render a view (steam-games.ejs) to display games
+    // Find all games that exactly match the search term and remove duplicates
+    const matchingGames = games
+      .filter(g => g.name.toLowerCase() === gameName)
+      .filter((game, index, self) =>
+        index === self.findIndex((t) => t.appid === game.appid)
+      );
+
+    if (matchingGames.length > 0) {
+      console.log('Matching games found:', matchingGames);
+      res.json(matchingGames);
+    } else {
+      console.log('No exact matches found in Steam API');
+      res.status(404).json({ error: "No exact matches found" });
+    }
   } catch (error) {
-    console.error('Error fetching and displaying Steam games:', error);
-    res.status(500).send("Error fetching Steam games");
+    console.error('Error fetching game info:', error);
+    res.status(500).json({ error: "Error fetching game information" });
+  }
+});
+
+app.get("/game-details", async function (req, res) {
+  const appId = req.query.appId;
+  try {
+    const steam = new steamAPI(process.env.STEAM_API_KEY);
+    const gameDetails = await steam.getGameDetails(appId);
+    res.json(gameDetails);
+  } catch (error) {
+    console.error('Error fetching game details:', error);
+    res.status(500).json({ error: "Error fetching game details" });
   }
 });
 

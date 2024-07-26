@@ -48,3 +48,46 @@ function addCategoryTag(tagValue) {
     categoryInput.placeholder = "Max Categories Reached";
   }
 }
+
+function fetchGameInfo() {
+  const gameName = document.getElementById('game-search').value;
+  fetch(`/game-info?name=${encodeURIComponent(gameName)}`)
+    .then(response => response.json())
+    .then(games => {
+      if (games.error) {
+        throw new Error(games.error);
+      }
+      displayGameOptions(games);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Error fetching game information: ' + error.message);
+    });
+}
+
+function displayGameOptions(games) {
+  const container = document.getElementById('game-options');
+  container.innerHTML = '';
+  games.forEach(game => {
+    const button = document.createElement('button');
+    button.textContent = `${game.name} (AppID: ${game.appid})`;
+    button.onclick = () => selectGame(game.appid);
+    container.appendChild(button);
+  });
+}
+
+function selectGame(appId) {
+  fetch(`/game-details?appId=${appId}`)
+    .then(response => response.json())
+    .then(gameDetails => {
+      // Populate form fields with gameDetails
+      document.getElementById('name').value = gameDetails.name;
+      document.getElementById('appId').value = gameDetails.steam_appid;
+      document.getElementById('description').value = gameDetails.short_description;
+      // Add more fields as needed
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Error fetching game details: ' + error.message);
+    });
+}
