@@ -70,8 +70,9 @@ function handleGameSearch() {
   const gameName = document.getElementById('game-search').value.trim();
   const container = document.getElementById('game-options');
   const nameInput = document.getElementById('name');
-  const appIdInput = document.getElementById('appId');
+  const appIdInput = document.getElementById('id');
   const descriptionInput = document.getElementById('description');
+  const dateInput = document.getElementById('date')
 
   // Validate the input
   if (!gameName) {
@@ -125,6 +126,12 @@ function handleGameSearch() {
         nameInput.value = gameDetails.name;
         appIdInput.value = gameDetails.steam_appid;
         descriptionInput.value = gameDetails.short_description;
+
+        // Robust date parsing and formatting
+        const dateString = gameDetails.release_date.date;
+        const date = new Date(dateString);
+        const formattedDate = date.toISOString().slice(0, 10);
+        document.getElementById('date').value = formattedDate;
       })
       .catch(error => {
         console.error('Error:', error);

@@ -39,9 +39,9 @@
 
       <div class="form-group">
         <!-- Input field for entering the game's App ID -->
-        <label for="appId">App ID:</label>
+        <label for="id">App ID:</label>
         <input oninput="if(this.value.length > 8) this.value = this.value.slice(0, 8);" min="111111" type="number"
-          id="appId" name="appId" required>
+          id="id" name="id" required>
       </div>
 
       <div class="form-group">
@@ -49,7 +49,7 @@
         <label for="category">Category:</label>
         <div class="tags-input">
           <ul id="categoryTags"></ul> <!-- Container for displaying selected categories -->
-          <input maxlength="10" type="text" id="category" name="category"
+          <input maxlength="10" type="text" id="category" name="tags"
             placeholder="Enter categories, separate with commas">
         </div>
       </div>
@@ -57,7 +57,7 @@
       <div class="form-group">
         <!-- Input field for selecting the game's release date -->
         <label for="releaseDate">Release Date:</label>
-        <input type="date" id="releaseDate" name="releaseDate" required>
+        <input type="date" id="date" name="date" required>
       </div>
 
       <div class="form-group">
