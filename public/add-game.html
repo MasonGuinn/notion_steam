@@ -5,7 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add Steam Game to Notion</title>
+  <!-- Link to external stylesheet for styling -->
   <link rel="stylesheet" href="/style.css">
+  <!-- Link to external JavaScript file, with defer attribute to ensure it loads after the DOM -->
   <script src="index.js" defer></script>
 </head>
 
@@ -13,51 +15,61 @@
   <div class="container">
     <h1>Add Steam Game to Notion</h1>
 
-    <form id="searchGameForm" onsubmit="event.preventDefault(); searchGames();">
+    <!-- Form to search for Steam games -->
+    <form id="searchGameForm" onsubmit="event.preventDefault(); handleGameSearch();">
       <div class="form-group">
+        <!-- Input field for entering the game name to search -->
         <label for="game-search">Search Steam Game:</label>
-        <input type="text" id="game-search" name="game-search">
+        <input type="text" id="game-search" name="game-search" required>
       </div>
+      <!-- Submit button to trigger game search -->
       <input type="submit" value="Search Games">
+      <!-- Container to display search results -->
       <div id="game-options"></div>
     </form>
 
+    <!-- Form to add a selected game to Notion -->
     <form id="addGameForm" action="/add-game-to-notion" method="POST">
       <div class="form-group">
+        <!-- Input field for entering the game's name -->
         <label for="name">Name:</label>
         <input maxlength="30" type="text" id="name" name="name" required pattern="[A-Za-z\s\-'.]+"
           oninput="this.value = this.value.replace(/[^A-Za-z\s\-'.]/g, '')">
       </div>
 
       <div class="form-group">
+        <!-- Input field for entering the game's App ID -->
         <label for="appId">App ID:</label>
         <input oninput="if(this.value.length > 8) this.value = this.value.slice(0, 8);" min="111111" type="number"
           id="appId" name="appId" required>
       </div>
 
       <div class="form-group">
+        <!-- Input field and list for entering and displaying game categories -->
         <label for="category">Category:</label>
         <div class="tags-input">
-          <ul id="categoryTags"></ul>
+          <ul id="categoryTags"></ul> <!-- Container for displaying selected categories -->
           <input maxlength="10" type="text" id="category" name="category"
             placeholder="Enter categories, separate with commas">
         </div>
       </div>
 
       <div class="form-group">
+        <!-- Input field for selecting the game's release date -->
         <label for="releaseDate">Release Date:</label>
         <input type="date" id="releaseDate" name="releaseDate" required>
       </div>
 
       <div class="form-group">
+        <!-- Textarea for entering a brief description of the game -->
         <label for="description">Description:</label>
         <textarea id="description" name="description" rows="4"></textarea>
       </div>
 
+      <!-- Submit button to add the game to Notion -->
       <input type="submit" value="Add Game">
     </form>
   </div>
-
 </body>
 
 </html>
