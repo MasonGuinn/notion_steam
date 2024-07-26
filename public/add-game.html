@@ -13,15 +13,16 @@
   <div class="container">
     <h1>Add Steam Game to Notion</h1>
 
-    <div class="form-group">
-      <label for="game-search">Search Steam Game:</label>
-      <input type="text" id="game-search" name="game-search">
-      <button type="button" onclick="fetchGameInfo()">Fetch Game Info</button>
-    </div>
+    <form id="searchGameForm" onsubmit="event.preventDefault(); searchGames();">
+      <div class="form-group">
+        <label for="game-search">Search Steam Game:</label>
+        <input type="text" id="game-search" name="game-search">
+      </div>
+      <input type="submit" value="Search Games">
+      <div id="game-options"></div>
+    </form>
 
-    <div id="game-options"></div>
-
-    <form id="addGameForm" action="/add-game" method="POST">
+    <form id="addGameForm" action="/add-game-to-notion" method="POST">
       <div class="form-group">
         <label for="name">Name:</label>
         <input maxlength="30" type="text" id="name" name="name" required pattern="[A-Za-z\s\-'.]+"
