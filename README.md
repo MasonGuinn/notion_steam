@@ -4,7 +4,10 @@
 ### How to use
 
 1. Once the app is running (See steps below), go to the URL ```http://localhost:3000/``` in your browser.
-2. Simply, add the game name to the 
+2. Simply, search for a game in the search bar. OR add game information manually by filling out the form.
+NOTE: Searching for a game will automatically populate the form with the game's information.
+3. Once the form is filled out, click the submit button.
+4. The game will be added to the Notion database!
 
 ### File structure
 
