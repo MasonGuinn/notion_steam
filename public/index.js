@@ -37,7 +37,6 @@ const api = {
 function initEventListeners() {
   elements.tagInput.addEventListener('keydown', handleTagInput);
   elements.addGameForm.addEventListener('submit', handleFormSubmit);
-  document.addEventListener('DOMContentLoaded', fetchDatabaseId);
   elements.gameSearch.addEventListener('input', handleGameSearch);
 }
 
@@ -166,6 +165,7 @@ function displayGameOptions(games) {
 function handleGameSelection(appId) {
   api.getGameDetails(appId)
     .then(gameDetails => {
+      elements.tagContainer.innerHTML = '';
       elements.nameInput.value = gameDetails.name;
       elements.appIdInput.value = gameDetails.steam_appid;
       elements.descriptionInput.value = gameDetails.short_description;
