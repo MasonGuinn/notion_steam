@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import express from "express";
 import steamAPI from "steamapi";
 import { Client } from "@notionhq/client";
+import fs from 'fs/promises'
 import path from "path";
 
 // Load environment variables from .env file
@@ -25,35 +26,27 @@ const notion = new Client({ auth: process.env.NOTION_KEY });
 
 // Endpoint to search for games by name
 app.get("/search-games", async function (req, res) {
-  // Extract the game name from the query parameters and convert it to lowercase for case-insensitive search
   const searchTerm = req.query.name.toLowerCase();
   console.log('Searching for game:', searchTerm);
 
   try {
-    // Initialize Steam API client using the API key from environment variables
-    const steam = new steamAPI(process.env.STEAM_API_KEY);
+    const appListPath = path.join(__dirname, 'public', 'GetAppList');
+    const appListData = await fs.readFile(appListPath, 'utf8');
+    const allGames = JSON.parse(appListData).applist.apps;
 
-    // Fetch the list of all games from the Steam API
-    const allGames = await steam.getAppList();
-
-    // Filter the list of games to find those with names matching the search term
     const matchingGames = allGames.filter(game =>
       game.name.toLowerCase() === searchTerm
     );
 
-    // Check if any matching games were found
     if (matchingGames.length > 0) {
-      // If matches are found, log and return the list of matching games as JSON
       console.log('Matching games found:', matchingGames);
       res.json(matchingGames);
     } else {
-      // If no matches are found, log the result and return a 404 status with an error message
-      console.log('No matches found in Steam API');
+      console.log('No matches found in local app list');
       res.status(404).json({ error: "No matches found" });
     }
   } catch (error) {
-    // Catch any errors during the fetch operation, log the error, and return a 500 status with an error message
-    console.error('Error fetching game info:', error);
+    console.error('Error reading or parsing local app list:', error);
     res.status(500).json({ error: "Error fetching game information" });
   }
 });
@@ -62,11 +55,17 @@ app.get("/search-games", async function (req, res) {
 app.get("/game-details", async function (req, res) {
   const appId = req.query.appId;
   try {
-    const steam = new steamAPI(process.env.STEAM_API_KEY);
+    const steam = new steamAPI(false);
     const gameDetails = await steam.getGameDetails(appId);
+
+    // Extract tags from the genres or categories
+    const tags = gameDetails.genres ? gameDetails.genres.map(genre => genre.description) : [];
+    console.log('Tags:', tags);
+
     res.json({
       ...gameDetails,
-      release_date: gameDetails.release_date
+      release_date: gameDetails.release_date,
+      tags: tags
     });
   } catch (error) {
     console.error('Error fetching game details:', error);
@@ -74,12 +73,21 @@ app.get("/game-details", async function (req, res) {
   }
 });
 
-// Endpoint to add a game to the Notion database
 app.post("/add-game-to-notion", async function (req, res) {
   // Extract data from the request body
   const { name, tags, description, date, id } = req.body;
 
+  console.log('Received name:', name);
   console.log('Received date:', date);
+  console.log('Received tags:', tags);
+  console.log('Received description:', description);
+  console.log('Received id:', id);
+
+  // Parse tags from the comma-separated string and remove trailing 'X'
+  let tagsArray = tags.split(',').map(tag => tag.trim().replace(/X$/, ''));
+
+  // Convert tags to the format required by Notion
+  const tagsToSave = tagsArray.map(tag => ({ name: tag }));
 
   try {
     // Validate and format the Date property
@@ -95,18 +103,15 @@ app.post("/add-game-to-notion", async function (req, res) {
     // Convert date to ISO string format required by Notion
     const formattedDate = dateObj.toISOString();
 
-    // Ensure tags is an array and format it for Notion
-    const tagsToSave = Array.isArray(tags) ? tags.map(tag => ({ name: tag })) : [];
-
     // Create a new page in the Notion database
     const newGame = await notion.pages.create({
       parent: { database_id: process.env.NOTION_DATABASE_ID }, // Specify the Notion database ID
       properties: {
         // Map the incoming data to Notion properties
         Name: { title: [{ text: { content: name } }] }, // Title of the game
-        Number: { number: parseInt(id) }, // Numeric value associated with the game
-        Tags: { multi_select: tagsToSave }, // Tags associated with the game (was categories, now fixed to tagsToSave)
-        Date: { date: { start: formattedDate } }, // Formatted date
+        AppID: { number: parseInt(id) }, // Numeric value associated with the game
+        Tags: { multi_select: tagsToSave }, // Tags associated with the game
+        Created: { date: { start: formattedDate } }, // Formatted date
         Description: { rich_text: [{ text: { content: description } }] }, // Description of the game
       },
     });

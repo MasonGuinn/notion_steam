@@ -18,10 +18,16 @@
     <!-- Form to search for Steam games -->
     <form id="searchGameForm" onsubmit="event.preventDefault(); handleGameSearch();">
       <div class="form-group">
+        <!-- Input field for entering the Notion database URL -->
+        <label for="notion-url">Notion Database URL:</label>
+        <input type="text" id="notion-url" name="notion-url" placeholder="Paste your Notion database URL here">
+        <button type="button" onclick="parseNotionUrl()">Set Database ID</button>
+
         <!-- Input field for entering the game name to search -->
         <label for="game-search">Search Steam Game:</label>
         <input type="text" id="game-search" name="game-search" required>
       </div>
+
       <!-- Submit button to trigger game search -->
       <input type="submit" value="Search Games">
       <!-- Container to display search results -->
@@ -46,11 +52,10 @@
 
       <div class="form-group">
         <!-- Input field and list for entering and displaying game categories -->
-        <label for="category">Category:</label>
+        <label for="tags">Tags:</label>
         <div class="tags-input">
-          <ul id="categoryTags"></ul> <!-- Container for displaying selected categories -->
-          <input maxlength="10" type="text" id="category" name="tags"
-            placeholder="Enter categories, separate with commas">
+          <ul id="tagContainer"></ul> <!-- Container for displaying selected categories -->
+          <input maxlength="30" type="text" id="tag" name="tag" placeholder="Enter categories, separate with commas">
         </div>
       </div>
 
