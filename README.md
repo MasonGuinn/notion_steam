@@ -1,6 +1,10 @@
 # Steam and Notion integration
 
 ## Use web form to add game to existing Notion database
+### How to use
+
+1. Once the app is running (See steps below), go to the URL ```http://localhost:3000/``` in your browser.
+2. Simply, add the game name to the 
 
 ### File structure
 
@@ -65,6 +69,3 @@ node server.js
 
 Check the terminal response to see which port to use when viewing the app locally in your browser of choice (`localhost:<port>`).
 
-
-### FUTURE UPDATES:
-You will be able to simply select the game you want to add to your Notion database and the name, description, date, price, and more will be automatically filled in. This is the "Steam" part of the integration. 
